@@ -2,6 +2,7 @@ package org.uniandes.websemantic.page;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.jsoup.Jsoup;
@@ -9,17 +10,20 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.uniandes.websemantic.file.ArtistFile;
+import org.uniandes.websemantic.hibernate.HibernateSession;
 import org.uniandes.websemantic.object.Artist;
 
-public class Arnet {
+public class Artnet {
 
 	private static String pagina = "http://www.artnet.com";
 	//Paginas ya vistitadas
 	private static Set<String> paginas;
+	
 	public static void crawling(){
 		Set<Artist> artistList = new HashSet<Artist>();
 
-		paginas = new HashSet<String>();
+		paginas = paginasYavisitadas();
+
 		Document doc;
 		try {
 			String url="/artists/";
@@ -36,26 +40,37 @@ public class Arnet {
 					new ArtistFile("artnet"+titulo,artistList);
 				}
 			}
+			HibernateSession.getInstance().closeSession();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 
+	private static Set<String> paginasYavisitadas() {
+		paginas = new HashSet<String>();
+		List<?> listArtist = HibernateSession.getInstance().createCriteria(Artist.class);			
+		for (Object artist : listArtist) {
+			paginas.add(((Artist) artist).getUrl().replace("http://www.artnet.com",""));
+		}
+		return paginas;
+	}
+
 	private static Set<Artist> subPage(String url, String nombre) throws IOException {
-		Document doc = Jsoup.connect(pagina+fixUrl(url)).get(); 
+		String uri = pagina+fixUrl(url);
+		Document doc = Jsoup.connect(uri).get(); 
 		Set<Artist> artistList = new HashSet<Artist>();
 		paginas.add(url);
 		String titulo = doc.title();
 		if(titulo.startsWith("Browse Artists Starting with ")){
-			new ArtistFile("artnet"+nombre,subPageAlpha(doc));
+			subPageAlpha(doc);
 		}
 		else if(titulo.startsWith("Top 300 Artists on artnet - Most Popular Artists"))
-			new ArtistFile("artnet300",subPageAlpha(doc));
+			subPageAlpha(doc);
 		else if(titulo.equals("Browse Artists on artnet - Modern and Contemporary Artists")){
-			new ArtistFile("artnet"+nombre,subPageAlpha(doc));
+			subPageAlpha(doc);
 		}else{
-			artistList.add(pageArtist(doc,nombre));
+			HibernateSession.getInstance().save(pageArtist(doc,nombre,uri));
 		}
 		return artistList;
 	}
@@ -66,15 +81,15 @@ public class Arnet {
 	 * @return
 	 */
 	private static String fixUrl(String url) {
-//		if(url.contains("uecker")) //ä
-//			System.err.println("reivsar");
+		//		if(url.contains("uecker")) //ä
+		//			System.err.println("reivsar");
 		if(url.contains("%c3%a0"))
 			url = url.replace("%c3%a0","à");
 
 		if(url.contains("%c3%a3"))
 			url = url.replace("%c3%a3","ã");
-		
-		
+
+
 		if(url.contains("%c3%a4"))
 			url = url.replace("%c3%a4","ä");
 		if(url.contains("%c3%af"))
@@ -94,14 +109,14 @@ public class Arnet {
 	}
 
 
-	private static Artist pageArtist(Document doc,String titulo) throws IOException {
+	private static Artist pageArtist(Document doc,String titulo,String uri) throws IOException {
 		Artist artista = new Artist();
 		String name = getArtistName(doc);
 		artista.setName(name);
 		artista.setNacionalidad(getNationality(doc));
 		artista.setAnioNacimiento(getAnioNacimiento(doc));
 		artista.setAnioMuerte(getAnioMuerte(doc)); 
-		artista.setUrl(doc.baseUri()); 
+		artista.setUrl(uri); 
 		System.out.println(artista);
 		return artista;
 	}
@@ -187,16 +202,18 @@ public class Arnet {
 		return name;
 	}
 
-	private static Set<Artist> subPageAlpha(Document doc) throws IOException {
-		Set<Artist> artistList = new HashSet<Artist>();
+	private static void subPageAlpha(Document doc) throws IOException {
+	//	Set<Artist> artistList = new HashSet<Artist>();
 		Elements links = doc.select("a[href^=/artists/]");
 		for (Element link : links) {
 			String url = link.attr("href");
 			if(!paginas.contains(url)){
-				artistList.addAll(subPage(url,link.text()));
+				subPage(url,link.text());
 				paginas.add(url);
 			}
 		}
-		return artistList;
 	}
+
+
+
 }

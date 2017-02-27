@@ -1,11 +1,11 @@
 package org.uniandes.websemantic;
 
-import org.uniandes.websemantic.page.Arnet;
+import org.uniandes.websemantic.page.Artnet;
 
 public class WebSemanticArtCrawling {
 
 	public static void main(String[] args) {
-		Arnet.crawling();
+		Artnet.crawling();
     }
 
 	
