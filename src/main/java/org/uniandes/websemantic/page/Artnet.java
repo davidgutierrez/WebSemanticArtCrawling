@@ -12,6 +12,7 @@ import org.jsoup.select.Elements;
 import org.uniandes.websemantic.file.ArtistFile;
 import org.uniandes.websemantic.hibernate.HibernateSession;
 import org.uniandes.websemantic.object.Artist;
+import org.uniandes.websemantic.object.Artwork;
 
 public class Artnet {
 
@@ -70,10 +71,29 @@ public class Artnet {
 		else if(titulo.equals("Browse Artists on artnet - Modern and Contemporary Artists")){
 			subPageAlpha(doc);
 		}else{
-			HibernateSession.getInstance().save(pageArtist(doc,nombre,uri));
+			Artist artist = pageArtist(doc,nombre,uri);
+			HibernateSession.getInstance().save(artist);
+			pageArtworks(doc,artist);
+
 		}
 		return artistList;
 	}
+
+	private static void pageArtworks(Document doc, Artist artist) {
+		Elements artworks = doc.select("div.col-sm-4.col-xs-6.artwork");
+		for (Element arts : artworks) {
+			Elements art = arts.select("p");
+			Artwork artwork = new Artwork();
+			artwork.setArtist(artist);
+			String nameArt = art.get(1).text();
+			artwork.setNombre(nameArt);
+			artwork.setPrecio(art.get(3).text());
+			artwork.setMuseo(art.get(2).text());
+			HibernateSession.getInstance().save(artwork);
+			
+		}
+	}
+
 
 	/**
 	 * corrige errores de tildes
@@ -118,6 +138,7 @@ public class Artnet {
 		artista.setAnioMuerte(getAnioMuerte(doc)); 
 		artista.setUrl(uri); 
 		System.out.println(artista);
+		
 		return artista;
 	}
 

@@ -1,9 +1,15 @@
 package org.uniandes.websemantic.object;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Artist {
@@ -15,14 +21,18 @@ public class Artist {
 	private String name,anioNacimiento,anioMuerte,movimiento,nacionalidad,
 	paismuerte,tipodearte,influenciadopor,influencioa,url;
 
-	
+	@ElementCollection(targetClass=Artwork.class)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "artist")
+	private Set<Artwork> artworks;
 	public Artist() {
 		super();
+		artworks = new HashSet<Artwork>();
 	}
 
 	public Artist(String name, String anioNacimiento, String anioMuerte, String movimiento, String nacionalidad,
 			String paismuerte, String tipodearte, String influenciadopor, String influencioa, String url) {
 		super();
+		artworks = new HashSet<Artwork>();
 		this.name = name;
 		this.anioNacimiento = anioNacimiento;
 		this.anioMuerte = anioMuerte;
@@ -120,6 +130,14 @@ public class Artist {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public Set<Artwork> getArtworks() {
+		return artworks;
+	}
+
+	public void setArtworks(Set<Artwork> artworks) {
+		this.artworks = artworks;
 	}
 
 	@Override

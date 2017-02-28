@@ -44,7 +44,7 @@ public class HibernateSession {
 			session.close();
 		}
 	}
-	public void save(Artist pageArtist) {
+	public void save(Object pageArtist) {
 		session = sessionFactory.openSession();
 		session.beginTransaction();
 		session.save(pageArtist);

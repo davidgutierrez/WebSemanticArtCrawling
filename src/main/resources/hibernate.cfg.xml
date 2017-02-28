@@ -27,5 +27,6 @@
  
         <!-- Annotated entity classes -->
         <mapping class="org.uniandes.websemantic.object.Artist"/>
+        <mapping class="org.uniandes.websemantic.object.Artwork"/>
     </session-factory>
 </hibernate-configuration>
