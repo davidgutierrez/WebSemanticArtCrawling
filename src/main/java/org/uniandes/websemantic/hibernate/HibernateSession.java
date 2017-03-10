@@ -2,6 +2,7 @@ package org.uniandes.websemantic.hibernate;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -17,7 +18,7 @@ public class HibernateSession {
 	private static HibernateSession instance = null;
 
 	private static Session session;
-	
+
 	protected HibernateSession() {
 		sessionFactory = createSessionFactory();
 	}
@@ -45,19 +46,35 @@ public class HibernateSession {
 		}
 	}
 	public void save(Object pageArtist) {
-		session = sessionFactory.openSession();
-		session.beginTransaction();
-		session.save(pageArtist);
-		session.getTransaction().commit();
-		session.close();
+		try {
+			if(pageArtist==null)
+				return;
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			session.save(pageArtist);
+			session.getTransaction().commit();
+			session.close();		
+		} catch (Exception e) {
+			String message = e.getMessage();
+			System.err.println(message);
+		}
 	}
-	public List<?> createCriteria(Class<Artist> class1) {
+	public List<?> createCriteria(Class<?> class1) {
 		session = sessionFactory.openSession();
 		session.beginTransaction();
 		List<?> list = session.createCriteria(class1).list();
+//		session.getTransaction().commit();
+//		session.close();
+		return list;
+	}
+	
+	public Artist get(Artist artist) {
+		session = sessionFactory.openSession();
+		session.beginTransaction();
+		Hibernate.initialize(artist);
 		session.getTransaction().commit();
 		session.close();
-		return list;
+		return artist;
 	}
 
 }

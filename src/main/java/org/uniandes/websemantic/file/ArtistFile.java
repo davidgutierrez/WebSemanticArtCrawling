@@ -9,6 +9,7 @@ import java.util.Set;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.uniandes.websemantic.object.Artist;
+import org.uniandes.websemantic.object.Artwork;
 
 public class ArtistFile {
 
@@ -16,7 +17,9 @@ public class ArtistFile {
 	private static final String NEW_LINE_SEPARATOR = "\n";
 
 	CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);		// TODO Auto-generated method stub
-	private static final Object [] FILE_HEADER = {"nombre artista","año nacimiento","año muerte",
+	
+	private static final Object [] FILE_HEADER = 
+	{"nombre","tipo,año","tecnica","precio","tamaño","museo","urlImagen","nombre artista","año nacimiento","año muerte",
 			"movimiento","pais nacionalidad","pais muerte","tipo de arte","influenciado por","influencio a","url"};
 
 	CSVPrinter csvFilePrinter = null;
@@ -27,11 +30,11 @@ public class ArtistFile {
 		init(pageName);
 	}
 
-	public ArtistFile(String pageName, Set<Artist> artistList) {
+	public ArtistFile(String pageName, Set<Artwork> artworks) {
 		try {
 			init(pageName);
-			for (Artist artist : artistList) {
-				escribirArtista(artist);
+			for (Artwork artwork : artworks) {
+				escribirArtista(artwork);
 			}
 			closeFile();
 		} catch (IOException e) {
@@ -72,8 +75,17 @@ public class ArtistFile {
 	 * @param artist datos del artista
 	 * @throws IOException en caso que existan problemas con el lector del artista
 	 */
-	public void escribirArtista(Artist artist) throws IOException{
+	public void escribirArtista(Artwork artwork) throws IOException{
 		List<String> artistDataRecord = new ArrayList<String>();
+		artistDataRecord.add(artwork.getNombre());
+		artistDataRecord.add(artwork.getTipo());
+		artistDataRecord.add(artwork.getAno());
+		artistDataRecord.add(artwork.getTecnica());
+		artistDataRecord.add(artwork.getPrecio());
+		artistDataRecord.add(artwork.getTamano());
+		artistDataRecord.add(artwork.getMuseo());
+		artistDataRecord.add(artwork.getUrlPic());
+		Artist artist = artwork.getArtist();
 		artistDataRecord.add(artist.getName());
 		artistDataRecord.add(artist.getAnioNacimiento());
 		artistDataRecord.add(artist.getAnioMuerte());
