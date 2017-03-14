@@ -1,11 +1,9 @@
 package org.uniandes.websemantic.page;
 
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class Wga {
 							List<Node> nodos = e.childNodes();
 							if (!nodos.isEmpty() && nodos.size()==5 && !nodos.get(1).childNode(0).childNode(0).toString().contains("ARTIST")) {
 								StringBuffer registro = new StringBuffer();
-								String nombreArtista = nodos.get(1).childNode(0).childNode(0).toString();
+//								String nombreArtista = nodos.get(1).childNode(0).childNode(0).toString();
 								if(nodos.get(1).childNode(0).attr("href").isEmpty() && !nodos.get(1).hasAttr("width")){
 									String elementoA = nodos.get(1).toString().split("<a href=")[1];
 									String urlCalculada = !elementoA.isEmpty() ? elementoA.split("\"")[1] : "";
@@ -108,7 +106,6 @@ public class Wga {
 			for(int i=0; i<el.childNodes().size(); i++){
 				List<Node> n = el.childNodes();
 				
-				int elemento = 0;
 				if (!n.get(i).childNodes().isEmpty()) {
 					registroObra.append(urlCalculada);
 					registroObra.append(";");
@@ -133,7 +130,6 @@ public class Wga {
 							registroObra.append(dato);
 //							System.out.println(elemento + nInterior.toString().replaceAll("\n", ""));
 						}
-						elemento ++;
 					}
 					
 				}

@@ -20,7 +20,6 @@ public class WikiArt {
 	private static Set<String> paginas;
 	
 	public static void crawling(){
-		Set<Artist> artistList = new HashSet<Artist>();
 		paginas = paginasYavisitadas();
 		Document doc;
 		try {
@@ -35,7 +34,7 @@ public class WikiArt {
 				url = link.attr("href");
 				String titulo = link.text();
 				if(!paginas.contains(url)){
-					artistList = subPage(url,titulo);
+					subPage(url,titulo);
 				}
 			}
 			HibernateSession.getInstance().closeSession();
@@ -56,10 +55,9 @@ public class WikiArt {
 		return paginas;
 	}
 
-	private static Set<Artist> subPage(String url, String nombre) throws IOException {
+	private static void subPage(String url, String nombre) throws IOException {
 		String uri = pagina+fixUrl(url);
 		Document doc = Jsoup.connect(uri).get(); 
-		Set<Artist> artistList = new HashSet<Artist>();
 		paginas.add(url);
 		
 		Elements ListaArtista = doc.select("ul.artists-list > li");
@@ -80,13 +78,9 @@ public class WikiArt {
 				finally
 				{
 //					System.err.println("Time Out en el artista");
-				}
-				
-			}
-			
+				}	
+			}			
 		}
-		
-		return artistList;
 	}
 
 	private static void pageArtworks(Document doc, Artist artist) throws IOException {
@@ -150,18 +144,6 @@ public class WikiArt {
 		
 		return urlStrig;
 	}
-
-
-	private static String getUrl(Document paginaArte) {
-		String url = paginaArte.select("a[href*=wikipedia.org]").text();
-		
-		if(url.isEmpty()){
-			System.err.println("error url");
-		}
-		
-		return url;
-	}
-
 
 	private static String getAno(Document paginaArte) {
 		String ano = paginaArte.select("span[itemprop=dateCreated]").text();
@@ -494,18 +476,4 @@ public class WikiArt {
 		return name;
 	}
 
-	private static void subPageAlpha(Document doc) throws IOException {
-	//	Set<Artist> artistList = new HashSet<Artist>();
-		Elements links = doc.select("a[href^=/artists/]");
-		for (Element link : links) {
-			String url = link.attr("href");
-			if(!paginas.contains(url)){
-				subPage(url,link.text());
-				paginas.add(url);
-			}
-		}
-	}
-
-
-
-}
+}//WikiArt
