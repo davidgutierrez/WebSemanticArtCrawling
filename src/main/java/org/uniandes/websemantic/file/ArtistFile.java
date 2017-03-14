@@ -84,7 +84,7 @@ public class ArtistFile {
 		artistDataRecord.add(artwork.getPrecio());
 		artistDataRecord.add(artwork.getTamano());
 		artistDataRecord.add(artwork.getMuseo());
-		artistDataRecord.add(artwork.getUrlPic());
+		artistDataRecord.add(artwork.getUrlImg());
 		Artist artist = artwork.getArtist();
 		artistDataRecord.add(artist.getName());
 		artistDataRecord.add(artist.getAnioNacimiento());

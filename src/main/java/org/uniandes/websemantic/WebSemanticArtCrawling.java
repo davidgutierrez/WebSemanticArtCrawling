@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.uniandes.websemantic.page.Artnet;
 import org.uniandes.websemantic.page.Wga;
+import org.uniandes.websemantic.page.WikiArt;
 import org.uniandes.websemantic.page.Artcyclopedia;
 
 public class WebSemanticArtCrawling {

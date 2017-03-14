@@ -139,7 +139,7 @@ public class Artnet {
 				artwork.setPrecio(art.get(3).text());
 				artwork.setMuseo(art.get(2).text());
 				Elements artUrl = arts.select("img");
-				artwork.setUrlPic(artUrl.attr("src"));
+				artwork.setUrlImg(artUrl.attr("src"));
 				returnList.add(artwork);
 			}	
 		}else{
@@ -151,7 +151,7 @@ public class Artnet {
 				String nameArt = art.get(0).text();
 				artwork.setNombre(nameArt);
 				Elements artUrl = arts.select("img");
-				artwork.setUrlPic(artUrl.attr("src"));
+				artwork.setUrlImg(artUrl.attr("src"));
 				returnList.add(artwork);
 			}	
 
