@@ -11,6 +11,7 @@ public class WebSemanticArtCrawling {
 		Artnet.crawling();
 		Wga wga = new Wga();
 		wga.crawling();
+		WikiArt.crawling();
 		try {
 			wga.descargarPostcards();
 			wga.descargarLugares();
