@@ -15,10 +15,10 @@ public class Artwork {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nombre,tipo,ano,tecnica,precio,tamano,museo;
-
-	@Column(length=2024)
-	private String urlPic;
+	private String nombre,tipo,autor,ano,tecnica,precio,tamano,museo, genero, estilo, url;
+	
+	@Column(length=2048)
+	private String urlImg;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "Artist_Id", nullable = false)
@@ -28,17 +28,26 @@ public class Artwork {
 		super();
 	}
 
-	public Artwork(String nombre, String tipo, String ano, String tecnica, String precio, String tamano,
-			String museo) {
+
+	public Artwork(Long id, String nombre, String tipo, String autor, String ano, String tecnica, String precio,
+			String tamano, String museo, String genero, String estilo, String url, String urlImg, Artist artist) {
 		super();
+		this.id = id;
 		this.nombre = nombre;
 		this.tipo = tipo;
+		this.autor = autor;
 		this.ano = ano;
 		this.tecnica = tecnica;
 		this.precio = precio;
 		this.tamano = tamano;
 		this.museo = museo;
+		this.genero = genero;
+		this.estilo = estilo;
+		this.url = url;
+		this.urlImg = urlImg;
+		this.artist = artist;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -53,8 +62,6 @@ public class Artwork {
 	}
 
 	public void setNombre(String nombre) {
-		if(nombre!=null && nombre.length()>255)
-			nombre = nombre.substring(0, 255);
 		this.nombre = nombre;
 	}
 
@@ -64,6 +71,14 @@ public class Artwork {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getAutor() {
+		return autor;
+	}
+
+	public void setAutor(String autor) {
+		this.autor = autor;
 	}
 
 	public String getAno() {
@@ -114,12 +129,38 @@ public class Artwork {
 		this.artist = artist;
 	}
 
-	public String getUrlPic() {
-		return urlPic;
+	public String getGenero() {
+		return genero;
 	}
 
-	public void setUrlPic(String urlPic) {
-		this.urlPic = urlPic;
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public String getEstilo() {
+		return estilo;
+	}
+
+	public void setEstilo(String estilo) {
+		this.estilo = estilo;
+	}
+
+
+	public String getUrl() {
+		return url;
+	}
+
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getUrlImg() {
+		return urlImg;
+	}
+
+	public void setUrlImg(String urlImg) {
+		this.urlImg = urlImg;
 	}
 	
 }

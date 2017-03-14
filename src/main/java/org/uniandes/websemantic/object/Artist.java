@@ -3,6 +3,7 @@ package org.uniandes.websemantic.object;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,8 +19,26 @@ public class Artist {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
  
-	private String name,anioNacimiento,anioMuerte,movimiento,nacionalidad,
-	paismuerte,tipodearte,influenciadopor,influencioa,url;
+	private String name,anioNacimiento,anioMuerte,movimiento,nacionalidad, lugarnacimiento,
+	paismuerte,tipodearte,url,escuela, artInstitution;
+	
+	@Column(length=2048)
+	private String influenciadopor;
+	
+	@Column(length=2048)
+	private String influencioa;
+	
+	@Column(length=2048)
+	private String urlWiki;
+		
+
+	public String getUrlWiki() {
+		return urlWiki;
+	}
+
+	public void setUrlWiki(String urlWiki) {
+		this.urlWiki = urlWiki;
+	}
 
 	@ElementCollection(targetClass=Artwork.class)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "artist")
@@ -29,20 +48,26 @@ public class Artist {
 		artworks = new HashSet<Artwork>();
 	}
 
-	public Artist(String name, String anioNacimiento, String anioMuerte, String movimiento, String nacionalidad,
-			String paismuerte, String tipodearte, String influenciadopor, String influencioa, String url) {
+	
+	public Artist(Long id, String name, String anioNacimiento, String anioMuerte, String movimiento,
+			String nacionalidad, String lugarnacimiento, String paismuerte, String tipodearte, String influenciadopor,
+			String influencioa, String url, String urlWiki, String escuela, Set<Artwork> artworks) {
 		super();
-		artworks = new HashSet<Artwork>();
+		this.id = id;
 		this.name = name;
 		this.anioNacimiento = anioNacimiento;
 		this.anioMuerte = anioMuerte;
 		this.movimiento = movimiento;
 		this.nacionalidad = nacionalidad;
+		this.lugarnacimiento = lugarnacimiento;
 		this.paismuerte = paismuerte;
 		this.tipodearte = tipodearte;
 		this.influenciadopor = influenciadopor;
 		this.influencioa = influencioa;
 		this.url = url;
+		this.urlWiki = urlWiki;
+		this.escuela = escuela;
+		this.artworks = artworks;
 	}
 
 	public Long getId() {
@@ -142,11 +167,37 @@ public class Artist {
 
 	@Override
 	public String toString() {
-		return "Artist [name=" + name + ", anioNacimiento=" + anioNacimiento + ", anioMuerte=" + anioMuerte
-				+ ", movimiento=" + movimiento + ", nacionalidad=" + nacionalidad + ", paismuerte=" + paismuerte
-				+ ", tipodearte=" + tipodearte + ", influenciadopor=" + influenciadopor + ", influencioa=" + influencioa
-				+ ", url=" + url + "]";
+		return "Artist [id=" + id + ", name=" + name + ", anioNacimiento=" + anioNacimiento + ", anioMuerte="
+				+ anioMuerte + ", movimiento=" + movimiento + ", nacionalidad=" + nacionalidad + ", paismuerte="
+				+ paismuerte + ", tipodearte=" + tipodearte + ", influenciadopor=" + influenciadopor + ", influencioa="
+				+ influencioa + ", url=" + url + ", urlWiki=" + urlWiki + ", artworks=" + artworks + "]";
 	}
+
+	public String getLugarnacimiento() {
+		return lugarnacimiento;
+	}
+
+	public void setLugarnacimiento(String lugarnacimiento) {
+		this.lugarnacimiento = lugarnacimiento;
+	}
+
+	public String getEscuela() {
+		return escuela;
+	}
+
+	public void setEscuela(String escuela) {
+		this.escuela = escuela;
+	}
+
+	public String getArtInstitution() {
+		return artInstitution;
+	}
+
+	public void setArtInstitution(String artInstitution) {
+		this.artInstitution = artInstitution;
+	}
+
+	
 	
 	
 }
