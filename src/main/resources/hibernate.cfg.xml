@@ -2,31 +2,32 @@
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
- 
+
 <hibernate-configuration>
-    <session-factory>
- 
-        <!-- Connection settings -->
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost/webSemantic</property>
-        <property name="hibernate.connection.username">user</property>
-        <property name="hibernate.connection.password">password</property>
- 		<property name="hibernate.connection.autocommit">true</property>
- 
-        <!-- SQL dialect -->
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
- 
-        <!-- Print executed SQL to stdout -->
-        <property name="show_sql">true</property>
- 
-        <!-- Drop and re-create all database on startup -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
- 
-        <!-- Drop and re-create all database on startup -->
-        <property name="hibernate.temp.use_jdbc_metadata_defaults">false</property>
- 
-        <!-- Annotated entity classes -->
-        <mapping class="org.uniandes.websemantic.object.Artist"/>
-        <mapping class="org.uniandes.websemantic.object.Artwork"/>
-    </session-factory>
+	<session-factory>
+
+		<!-- Connection settings -->
+		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://localhost/webSemantic</property>
+		<property name="hibernate.connection.username">user</property>
+		<property name="hibernate.connection.password">password</property>
+		<property name="hibernate.connection.autocommit">true</property>
+
+		<!-- SQL dialect -->
+		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+		<!-- Print executed SQL to stdout -->
+		<property name="show_sql">false</property>
+
+		<!-- Drop and re-create all database on startup -->
+		<property name="hibernate.hbm2ddl.auto">update</property>
+
+		<!-- Drop and re-create all database on startup -->
+		<property name="hibernate.temp.use_jdbc_metadata_defaults">false</property>
+
+		<!-- Annotated entity classes -->
+		<mapping class="org.uniandes.websemantic.object.NoArtist" />
+		<mapping class="org.uniandes.websemantic.object.Artist" />
+		<mapping class="org.uniandes.websemantic.object.Artwork" />
+	</session-factory>
 </hibernate-configuration>

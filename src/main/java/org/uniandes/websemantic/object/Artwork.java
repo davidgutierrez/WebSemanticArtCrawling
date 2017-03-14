@@ -1,5 +1,6 @@
 package org.uniandes.websemantic.object;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,7 +15,10 @@ public class Artwork {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nombre,tipo,autor,ano,tecnica,precio,tamano,museo;
+	private String nombre,tipo,ano,tecnica,precio,tamano,museo;
+
+	@Column(length=2024)
+	private String urlPic;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "Artist_Id", nullable = false)
@@ -24,12 +28,11 @@ public class Artwork {
 		super();
 	}
 
-	public Artwork(String nombre, String tipo, String autor, String ano, String tecnica, String precio, String tamano,
+	public Artwork(String nombre, String tipo, String ano, String tecnica, String precio, String tamano,
 			String museo) {
 		super();
 		this.nombre = nombre;
 		this.tipo = tipo;
-		this.autor = autor;
 		this.ano = ano;
 		this.tecnica = tecnica;
 		this.precio = precio;
@@ -50,6 +53,8 @@ public class Artwork {
 	}
 
 	public void setNombre(String nombre) {
+		if(nombre!=null && nombre.length()>255)
+			nombre = nombre.substring(0, 255);
 		this.nombre = nombre;
 	}
 
@@ -59,14 +64,6 @@ public class Artwork {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
-	}
-
-	public String getAutor() {
-		return autor;
-	}
-
-	public void setAutor(String autor) {
-		this.autor = autor;
 	}
 
 	public String getAno() {
@@ -115,6 +112,14 @@ public class Artwork {
 
 	public void setArtist(Artist artist) {
 		this.artist = artist;
+	}
+
+	public String getUrlPic() {
+		return urlPic;
+	}
+
+	public void setUrlPic(String urlPic) {
+		this.urlPic = urlPic;
 	}
 	
 }
